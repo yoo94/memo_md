@@ -98,18 +98,18 @@
 
 ## 정렬 관련 메서드 및 옵션
 
-|  |  |  | 
-| sort() |  | ['b', 'a', 'c'].sort()['a', 'b', 'c'] | 
-| sort((a, b) => a - b) |  | [10, 2, 5].sort((a, b) => a - b)[2, 5, 10] | 
-| sort((a, b) => b - a) |  | [10, 2, 5].sort((a, b) => b - a)[10, 5, 2] | 
-| localeCompare() |  | 'a'.localeCompare('b')-1 | 
-| sort((a, b) => a.localeCompare(b)) |  | ['Émile', 'Amélie'].sort((a, b) => a.localeCompare(b)) | 
-| locales |  | 'ko''en''fr' | 
-| sensitivity |  | 'base''accent''case''variant' | 
-| ignorePunctuation |  | { ignorePunctuation: true } | 
-| numeric |  | { numeric: true } | 
-| Intl.Collator |  | new Intl.Collator('ko').compare(a, b) | 
-
+ | 메서드 / 옵션 | 설명 | 예시 |
+|---------------|------|------|
+| `sort()` | 기본 문자열 기준 정렬 | `['b', 'a', 'c'].sort()` → `['a', 'b', 'c']` |
+| `sort((a, b) => a - b)` | 숫자 오름차순 정렬 | `[10, 2, 5].sort((a, b) => a - b)` → `[2, 5, 10]` |
+| `sort((a, b) => b - a)` | 숫자 내림차순 정렬 | `[10, 2, 5].sort((a, b) => b - a)` → `[10, 5, 2]` |
+| `localeCompare()` | 문자열 비교 (언어 규칙 적용) | `'a'.localeCompare('b')` → `-1` |
+| `sort((a, b) => a.localeCompare(b))` | 문자열 정렬 (기본 언어) | `['Émile', 'Amélie'].sort((a, b) => a.localeCompare(b))` |
+| `locales` | 언어 코드 설정 | `'ko'`, `'en'`, `'fr'` 등 |
+| `sensitivity` | 민감도 설정 | `'base'`, `'accent'`, `'case'`, `'variant'` |
+| `ignorePunctuation` | 구두점 무시 | `{ ignorePunctuation: true }` |
+| `numeric` | 숫자 포함 문자열 정렬 | `{ numeric: true }` |
+| `Intl.Collator` | 고급 지역별 정렬기 | `new Intl.Collator('ko').compare(a, b)` |
 
 
 
