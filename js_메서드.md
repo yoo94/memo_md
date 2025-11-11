@@ -94,3 +94,22 @@
 | `Math.min(...x)` | 최솟값 반환                 | `Math.min(1, 3, 2)` | `1`        |
 | `Math.random()`  | 0 이상 1 미만의 난수 반환       | `Math.random()`     | `0.123...` |
 | `Math.sign(x)`   | 부호 반환 (`-1`, `0`, `1`) | `Math.sign(-10)`    | `-1`       |
+
+
+## 정렬 관련 메서드 및 옵션
+|  |  |  | 
+| sort() |  | ['b', 'a', 'c'].sort()['a', 'b', 'c'] | 
+| sort((a, b) => a - b) |  | [10, 2, 5].sort((a, b) => a - b)[2, 5, 10] | 
+| sort((a, b) => b - a) |  | [10, 2, 5].sort((a, b) => b - a)[10, 5, 2] | 
+| localeCompare() |  | 'a'.localeCompare('b')-1 | 
+| sort((a, b) => a.localeCompare(b)) |  | ['Émile', 'Amélie'].sort((a, b) => a.localeCompare(b)) | 
+| locales |  | 'ko''en''fr' | 
+| sensitivity |  | 'base''accent''case''variant' | 
+| ignorePunctuation |  | { ignorePunctuation: true } | 
+| numeric |  | { numeric: true } | 
+| Intl.Collator |  | new Intl.Collator('ko').compare(a, b) | 
+
+
+
+
+
