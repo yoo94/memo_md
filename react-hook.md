@@ -1804,7 +1804,306 @@ function MultipleDeferred() {
 }
 ```
 
-#### ⚙️ 동작 원리
+
+### 11. useId
+
+#### 📌 개요
+| 항목 | 설명 |
+|------|------|
+| **버전** | React 18+ |
+| **생긴 이유** | 접근성과 하이드레이션에 안전한 고유 ID 생성 |
+| **사용 목적** | input, label, aria-* 속성 등에 고유 ID 할당 |
+| **언제 사용** | form 요소와 label을 연결하거나 접근성 속성에 ID가 필요할 때 |
+
+#### 💻 사용법
 
 ```javascript
-// useD
+import { useId } from 'react';
+
+// 1. 기본 사용 - label과 input 연결
+function LoginForm() {
+  const emailId = useId();
+  const passwordId = useId();
+
+  return (
+    <form>
+      <label htmlFor={emailId}>이메일: </label>
+      <input id={emailId} type="email" />
+
+      <label htmlFor={passwordId}>비밀번호:</label>
+      <input id={passwordId} type="password" />
+    </form>
+  );
+}
+
+// 2. 여러 form 요소
+function ContactForm() {
+  const nameId = useId();
+  const emailId = useId();
+  const messageId = useId();
+
+  return (
+    <form>
+      <div>
+        <label htmlFor={nameId}>이름:</label>
+        <input id={nameId} type="text" />
+      </div>
+
+      <div>
+        <label htmlFor={emailId}>이메일:</label>
+        <input id={emailId} type="email" />
+      </div>
+
+      <div>
+        <label htmlFor={messageId}>메시지:</label>
+        <textarea id={messageId} />
+      </div>
+
+      <button type="submit">전송</button>
+    </form>
+  );
+}
+
+// 3. aria 속성과 함께 사용
+function DropdownMenu() {
+  const menuId = useId();
+  const buttonId = useId();
+
+  return (
+    <div>
+      <button id={buttonId} aria-haspopup="true" aria-controls={menuId}>
+        메뉴
+      </button>
+      <ul id={menuId} role="menu">
+        <li role="menuitem">옵션 1</li>
+        <li role="menuitem">옵션 2</li>
+      </ul>
+    </div>
+  );
+}
+
+// 4. 리스트 아이템 ID 생성
+function ListItems() {
+  const id = useId();
+  const items = ['Apple', 'Banana', 'Orange'];
+
+  return (
+    <ul>
+      {items. map((item, index) => (
+        <li key={index} id={`${id}-${index}`}>
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+// 5. 서버 사이드 렌더링 안전성
+function SeededIdComponent() {
+  const id = useId();
+
+  return (
+    <div>
+      <label htmlFor={id}>입력:  </label>
+      <input id={id} type="text" />
+    </div>
+  );
+}
+```
+
+---
+
+### 12. useInsertionEffect
+
+#### 📌 개요
+| 항목 | 설명 |
+|------|------|
+| **버전** | React 18+ |
+| **생긴 이유** | CSS-in-JS 라이브러리가 스타일을 동적으로 삽입할 때 사용 |
+| **사용 목적** | DOM 읽기 전에 스타일 요소 삽입 |
+| **언제 사용** | styled-components, emotion 같은 라이브러리에서만 사용 (일반 개발자는 거의 사용 안 함) |
+
+#### 💻 사용법
+
+```javascript
+import { useInsertionEffect } from 'react';
+
+// 1. CSS-in-JS 라이브러리 개발
+function StyledComponent() {
+  useInsertionEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .button {
+        background: blue;
+        color: white;
+        padding: 10px;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
+  return <button className="button">클릭하세요</button>;
+}
+
+// 2. 동적 스타일 적용
+function DynamicTheme({ isDark }) {
+  useInsertionEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = isDark
+      ? `body { background: #333; color: #fff; }`
+      : `body { background: #fff; color: #333; }`;
+    
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, [isDark]);
+
+  return <div>테마 적용됨</div>;
+}
+
+// 3. 실행 순서 비교
+function ExecutionOrder() {
+  useInsertionEffect(() => {
+    console.log('1. useInsertionEffect');
+  }, []);
+
+  useLayoutEffect(() => {
+    console.log('3. useLayoutEffect');
+  }, []);
+
+  useEffect(() => {
+    console.log('4. useEffect');
+  }, []);
+
+  console.log('2. 컴포넌트 렌더링');
+
+  return <div>순서 테스트</div>;
+}
+```
+
+---
+
+### 13. useSyncExternalStore
+
+#### 📌 개요
+| 항목 | 설명 |
+|------|------|
+| **버전** | React 18+ |
+| **생긴 이유** | 외부 상태 관리 라이브러리(Redux, Zustand 등)를 React와 동기화 |
+| **사용 목적** | 외부 store의 상태 구독 및 동기화 |
+| **언제 사용** | Redux, Zustand, MobX 등의 상태 관리 라이브러리 사용 시 |
+
+#### 💻 사용법
+
+```javascript
+import { useSyncExternalStore } from 'react';
+
+// 1. 간단한 외부 store 예제
+const store = {
+  state: { count: 0 },
+  listeners: new Set(),
+
+  subscribe(listener) {
+    this.listeners.add(listener);
+    return () => this.listeners.delete(listener);
+  },
+
+  getSnapshot() {
+    return this.state;
+  },
+
+  setState(newState) {
+    this.state = { ...this.state, ...newState };
+    this.listeners.forEach(listener => listener());
+  }
+};
+
+function Counter() {
+  const state = useSyncExternalStore(
+    store.subscribe. bind(store),
+    store.getSnapshot. bind(store)
+  );
+
+  return (
+    <div>
+      <p>Count: {state.count}</p>
+      <button onClick={() => store.setState({ count: state.count + 1 })}>
+        증가
+      </button>
+    </div>
+  );
+}
+
+// 2. 더 복잡한 예제 - 여러 값
+const todoStore = {
+  todos: [],
+  listeners: new Set(),
+
+  subscribe(listener) {
+    this.listeners.add(listener);
+    return () => this.listeners.delete(listener);
+  },
+
+  getSnapshot() {
+    return {
+      todos: this.todos,
+      count: this.todos.length
+    };
+  },
+
+  addTodo(text) {
+    this.todos.push({ id: Date.now(), text });
+    this.notifyListeners();
+  },
+
+  removeTodo(id) {
+    this.todos = this. todos.filter(todo => todo. id !== id);
+    this.notifyListeners();
+  },
+
+  notifyListeners() {
+    this.listeners.forEach(listener => listener());
+  }
+};
+
+function TodoApp() {
+  const { todos, count } = useSyncExternalStore(
+    todoStore.subscribe.bind(todoStore),
+    todoStore.getSnapshot.bind(todoStore)
+  );
+
+  return (
+    <div>
+      <p>Total: {count}</p>
+      <button onClick={() => todoStore.addTodo('New Task')}>
+        추가
+      </button>
+      <ul>
+        {todos. map(todo => (
+          <li key={todo.id}>
+            {todo.text}
+            <button onClick={() => todoStore.removeTodo(todo.id)}>삭제</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// 3. 서버 사이드 렌더링 지원
+function ServerComponent() {
+  const snapshot = useSyncExternalStore(
+    store.subscribe.bind(store),
+    store.getSnapshot.bind(store),
+    () => ({ count: 0 }) // SSR 초기값
+  );
+
+  return <div>Count: {snapshot.count}</div>;
+}
+```
