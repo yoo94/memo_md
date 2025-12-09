@@ -646,6 +646,15 @@ useLayoutEffect 콜백 (DOM 측정/조작)
 useEffect 콜백 (데이터 페칭 등)
 ```
 
+# `useInsertionEffect` vs `useLayoutEffect` 비교
+
+| 특징 | `useInsertionEffect` | `useLayoutEffect` |
+|------|-------------------|-----------------|
+| **실행 시점** | DOM 커밋 전 | DOM 커밋 후, 화면 그리기 전 |
+| **DOM 접근** | ❌ 불가능 | ✅ 가능 |
+| **용도** | CSS-in-JS 라이브러리 | 레이아웃 측정, DOM 조작 |
+| **성능** | ⚡ 가장 빠름 | 중간 |
+
 ---
 
 ### 5. useSyncExternalStore
