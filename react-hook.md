@@ -1,8 +1,7 @@
-# React Hooks 완벽 가이드 (React 16.8 ~ React 19)
+# React Hooks 완벽 가이드 1
 
 **작성일**: 2025-12-08  
 **대상**: React 16.8 이상  
-**커버 범위**: 기본 Hook ~ React 19 최신 Hook
 
 ---
 
