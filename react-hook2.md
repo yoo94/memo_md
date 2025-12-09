@@ -25,8 +25,16 @@
 3. [Hooks 비교 및 선택 가이드](#hooks-비교-및-선택-가이드)
 
 ---
-
 ## 🚀 React 18 Hooks
+
+# `useDeferredValue` vs `useTransition` 비교
+
+| 특징 | `useDeferredValue` | `useTransition` |
+|------|-------------------|-----------------|
+| **목적** | 값(state)을 지연시킴 | 렌더링을 지연시킴 |
+| **사용 대상** | Props나 State 값 | 상태 업데이트 함수 |
+| **반환값** | 지연된 값 | (isPending, startTransition) |
+| **제어 방식** | 자동으로 값 지연 | 명시적으로 함수 래핑 |
 
 ### 1. useTransition
 
