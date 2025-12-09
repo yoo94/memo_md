@@ -667,6 +667,13 @@ useEffect 콜백 (데이터 페칭 등)
 | **사용처** | Redux, Zustand, MobX 등 상태 관리 라이브러리 |
 | **반환값** | store의 현재 값 |
 
+```
+const state = useSyncExternalStore(
+  subscribe,      // 1. 구독 함수
+  getSnapshot,    // 2. 현재 상태 가져오기
+  getServerSnapshot // 3. 서버 렌더링 시 상태 (선택사항)
+);
+```
 #### 💻 기본 사용법
 
 ```javascript
