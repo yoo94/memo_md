@@ -24,16 +24,6 @@
    - useId
    - useInsertionEffect
    - useSyncExternalStore
-5. [React 19 New Hooks](#react-19-new-hooks)
-   - useActionState (새로움)
-   - useFormStatus (새로움)
-   - useOptimistic (새로움)
-   - use() (새로움)
-   - Enhanced useTransition
-6. [Hook 동작 원리](#hook-동작-원리)
-7.  [최적화 전략](#최적화-전략)
-8. [Hook 선택 가이드](#hook-선택-가이드)
-
 ---
 
 ## 🎯 기본 Hooks (React 16.8)
